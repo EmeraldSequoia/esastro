@@ -1,0 +1,453 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9233F3D9138DED9B005A6A23 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9233F3D8138DED9B005A6A23 /* Foundation.framework */; };
+		9233F3EC138DEE46005A6A23 /* esastro_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 9233F3EB138DEE46005A6A23 /* esastro_Prefix.pch */; };
+		9233F401138DEF6B005A6A23 /* ESAstronomy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9233F400138DEF6B005A6A23 /* ESAstronomy.cpp */; };
+		9233F405138DEFBA005A6A23 /* ESAstronomyCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9233F403138DEFBA005A6A23 /* ESAstronomyCache.cpp */; };
+		9233F406138DEFBA005A6A23 /* ESAstronomyCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9233F404138DEFBA005A6A23 /* ESAstronomyCache.hpp */; };
+		9233F408138DEFCD005A6A23 /* ESAstronomy.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9233F407138DEFCD005A6A23 /* ESAstronomy.hpp */; };
+		9233F40A138DEFD5005A6A23 /* ESAstroConstants.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9233F409138DEFD5005A6A23 /* ESAstroConstants.hpp */; };
+		924EAFC915EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 924EAFC615EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.cpp */; };
+		924EAFCA15EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 924EAFC715EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.hpp */; };
+		924EAFCB15EC49BF0060BCA2 /* ESTimeLocAstroEnvironmentInl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 924EAFC815EC49BF0060BCA2 /* ESTimeLocAstroEnvironmentInl.hpp */; };
+		9297C0741714FC4200A04FBD /* ESSunAltitudeTable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9297C0721714FC4200A04FBD /* ESSunAltitudeTable.hpp */; };
+		9297C0751714FC4200A04FBD /* ESSunAltitudeTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9297C0731714FC4200A04FBD /* ESSunAltitudeTable.cpp */; };
+		92C3B1D5138F008500880094 /* ESWillmannBell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92C3B1D3138F008500880094 /* ESWillmannBell.cpp */; };
+		92C3B1D6138F008500880094 /* ESWillmannBell.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92C3B1D4138F008500880094 /* ESWillmannBell.hpp */; };
+		92C3B1D9138F00B800880094 /* ESWBLunarTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 92C3B1D8138F00B800880094 /* ESWBLunarTable.h */; };
+		92C3B1DB138F00C100880094 /* ESWBPlanetsTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 92C3B1DA138F00C100880094 /* ESWBPlanetsTable.h */; };
+		A95AE37D1EF9C77E006AE314 /* ECConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = A95AE37C1EF9C77E006AE314 /* ECConstants.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		923A8D872AFC65910093699A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9233F411138DF091005A6A23 /* esutil.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = esutil;
+		};
+		923A8D8D2AFC65A20093699A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9233F40B138DF06A005A6A23 /* ESTime.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = ESTime;
+		};
+		923A8D942AFC65B60093699A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 929C6F2F1397F23F005C081F /* eslocation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92C3B271139448F300880094;
+			remoteInfo = eslocation;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9233F3D5138DED9B005A6A23 /* libesastro.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libesastro.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9233F3D8138DED9B005A6A23 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9233F3EB138DEE46005A6A23 /* esastro_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = esastro_Prefix.pch; sourceTree = "<group>"; };
+		9233F400138DEF6B005A6A23 /* ESAstronomy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ESAstronomy.cpp; path = ../src/ESAstronomy.cpp; sourceTree = "<group>"; };
+		9233F403138DEFBA005A6A23 /* ESAstronomyCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ESAstronomyCache.cpp; path = ../src/ESAstronomyCache.cpp; sourceTree = "<group>"; };
+		9233F404138DEFBA005A6A23 /* ESAstronomyCache.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESAstronomyCache.hpp; path = ../src/ESAstronomyCache.hpp; sourceTree = "<group>"; };
+		9233F407138DEFCD005A6A23 /* ESAstronomy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESAstronomy.hpp; path = ../src/ESAstronomy.hpp; sourceTree = "<group>"; };
+		9233F409138DEFD5005A6A23 /* ESAstroConstants.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESAstroConstants.hpp; path = ../src/ESAstroConstants.hpp; sourceTree = "<group>"; };
+		9233F40B138DF06A005A6A23 /* ESTime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ESTime.xcodeproj; path = ../../estime/ios/ESTime.xcodeproj; sourceTree = SOURCE_ROOT; };
+		9233F411138DF091005A6A23 /* esutil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = esutil.xcodeproj; path = ../../esutil/ios/esutil.xcodeproj; sourceTree = SOURCE_ROOT; };
+		924EAFC615EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ESTimeLocAstroEnvironment.cpp; path = ../src/ESTimeLocAstroEnvironment.cpp; sourceTree = "<group>"; };
+		924EAFC715EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESTimeLocAstroEnvironment.hpp; path = ../src/ESTimeLocAstroEnvironment.hpp; sourceTree = "<group>"; };
+		924EAFC815EC49BF0060BCA2 /* ESTimeLocAstroEnvironmentInl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESTimeLocAstroEnvironmentInl.hpp; path = ../src/ESTimeLocAstroEnvironmentInl.hpp; sourceTree = "<group>"; };
+		9297C0721714FC4200A04FBD /* ESSunAltitudeTable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESSunAltitudeTable.hpp; path = ../src/ESSunAltitudeTable.hpp; sourceTree = "<group>"; };
+		9297C0731714FC4200A04FBD /* ESSunAltitudeTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ESSunAltitudeTable.cpp; path = ../src/ESSunAltitudeTable.cpp; sourceTree = "<group>"; };
+		929C6F2F1397F23F005C081F /* eslocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = eslocation.xcodeproj; path = ../../eslocation/ios/eslocation.xcodeproj; sourceTree = "<group>"; };
+		92C3B1D3138F008500880094 /* ESWillmannBell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ESWillmannBell.cpp; path = "../Willmann-Bell/ESWillmannBell.cpp"; sourceTree = "<group>"; };
+		92C3B1D4138F008500880094 /* ESWillmannBell.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ESWillmannBell.hpp; path = "../Willmann-Bell/ESWillmannBell.hpp"; sourceTree = "<group>"; };
+		92C3B1D8138F00B800880094 /* ESWBLunarTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ESWBLunarTable.h; path = "../Willmann-Bell/Lunar/ESWBLunarTable.h"; sourceTree = "<group>"; };
+		92C3B1DA138F00C100880094 /* ESWBPlanetsTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ESWBPlanetsTable.h; path = "../Willmann-Bell/Planets/ESWBPlanetsTable.h"; sourceTree = "<group>"; };
+		A95AE37C1EF9C77E006AE314 /* ECConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECConstants.h; path = ../src/ECConstants.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9233F3D2138DED9B005A6A23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9233F3D9138DED9B005A6A23 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9233F3CA138DED9B005A6A23 = {
+			isa = PBXGroup;
+			children = (
+				9233F411138DF091005A6A23 /* esutil.xcodeproj */,
+				9233F40B138DF06A005A6A23 /* ESTime.xcodeproj */,
+				929C6F2F1397F23F005C081F /* eslocation.xcodeproj */,
+				9233F402138DEF7D005A6A23 /* Classes */,
+				92C3B1D7138F009000880094 /* Willmann Bell */,
+				9233F3EA138DEE0C005A6A23 /* Other source */,
+				9233F3D7138DED9B005A6A23 /* Frameworks */,
+				9233F3D6138DED9B005A6A23 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9233F3D6138DED9B005A6A23 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9233F3D5138DED9B005A6A23 /* libesastro.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9233F3D7138DED9B005A6A23 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9233F3D8138DED9B005A6A23 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9233F3EA138DEE0C005A6A23 /* Other source */ = {
+			isa = PBXGroup;
+			children = (
+				9233F409138DEFD5005A6A23 /* ESAstroConstants.hpp */,
+				9233F404138DEFBA005A6A23 /* ESAstronomyCache.hpp */,
+				9233F403138DEFBA005A6A23 /* ESAstronomyCache.cpp */,
+				9233F3EB138DEE46005A6A23 /* esastro_Prefix.pch */,
+			);
+			name = "Other source";
+			sourceTree = "<group>";
+		};
+		9233F402138DEF7D005A6A23 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A95AE37C1EF9C77E006AE314 /* ECConstants.h */,
+				9233F407138DEFCD005A6A23 /* ESAstronomy.hpp */,
+				9233F400138DEF6B005A6A23 /* ESAstronomy.cpp */,
+				9297C0721714FC4200A04FBD /* ESSunAltitudeTable.hpp */,
+				9297C0731714FC4200A04FBD /* ESSunAltitudeTable.cpp */,
+				924EAFC715EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.hpp */,
+				924EAFC815EC49BF0060BCA2 /* ESTimeLocAstroEnvironmentInl.hpp */,
+				924EAFC615EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.cpp */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		923A8D842AFC65910093699A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				923A8D882AFC65910093699A /* libesutil.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		923A8D8A2AFC65A20093699A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				923A8D8E2AFC65A20093699A /* libESTime.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		923A8D912AFC65B60093699A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				923A8D952AFC65B60093699A /* libeslocation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92C3B1D7138F009000880094 /* Willmann Bell */ = {
+			isa = PBXGroup;
+			children = (
+				92C3B1D4138F008500880094 /* ESWillmannBell.hpp */,
+				92C3B1D3138F008500880094 /* ESWillmannBell.cpp */,
+				92C3B1DA138F00C100880094 /* ESWBPlanetsTable.h */,
+				92C3B1D8138F00B800880094 /* ESWBLunarTable.h */,
+			);
+			name = "Willmann Bell";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		9233F3D3138DED9B005A6A23 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9233F3EC138DEE46005A6A23 /* esastro_Prefix.pch in Headers */,
+				9233F406138DEFBA005A6A23 /* ESAstronomyCache.hpp in Headers */,
+				9233F408138DEFCD005A6A23 /* ESAstronomy.hpp in Headers */,
+				9233F40A138DEFD5005A6A23 /* ESAstroConstants.hpp in Headers */,
+				A95AE37D1EF9C77E006AE314 /* ECConstants.h in Headers */,
+				92C3B1D6138F008500880094 /* ESWillmannBell.hpp in Headers */,
+				92C3B1D9138F00B800880094 /* ESWBLunarTable.h in Headers */,
+				92C3B1DB138F00C100880094 /* ESWBPlanetsTable.h in Headers */,
+				924EAFCA15EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.hpp in Headers */,
+				924EAFCB15EC49BF0060BCA2 /* ESTimeLocAstroEnvironmentInl.hpp in Headers */,
+				9297C0741714FC4200A04FBD /* ESSunAltitudeTable.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		9233F3D4138DED9B005A6A23 /* esastro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9233F3DF138DED9B005A6A23 /* Build configuration list for PBXNativeTarget "esastro" */;
+			buildPhases = (
+				9233F3D1138DED9B005A6A23 /* Sources */,
+				9233F3D2138DED9B005A6A23 /* Frameworks */,
+				9233F3D3138DED9B005A6A23 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = esastro;
+			productName = esastro;
+			productReference = 9233F3D5138DED9B005A6A23 /* libesastro.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9233F3CC138DED9B005A6A23 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1240;
+			};
+			buildConfigurationList = 9233F3CF138DED9B005A6A23 /* Build configuration list for PBXProject "esastro" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9233F3CA138DED9B005A6A23;
+			productRefGroup = 9233F3D6138DED9B005A6A23 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 923A8D912AFC65B60093699A /* Products */;
+					ProjectRef = 929C6F2F1397F23F005C081F /* eslocation.xcodeproj */;
+				},
+				{
+					ProductGroup = 923A8D8A2AFC65A20093699A /* Products */;
+					ProjectRef = 9233F40B138DF06A005A6A23 /* ESTime.xcodeproj */;
+				},
+				{
+					ProductGroup = 923A8D842AFC65910093699A /* Products */;
+					ProjectRef = 9233F411138DF091005A6A23 /* esutil.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				9233F3D4138DED9B005A6A23 /* esastro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		923A8D882AFC65910093699A /* libesutil.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libesutil.a;
+			remoteRef = 923A8D872AFC65910093699A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923A8D8E2AFC65A20093699A /* libESTime.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libESTime.a;
+			remoteRef = 923A8D8D2AFC65A20093699A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923A8D952AFC65B60093699A /* libeslocation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libeslocation.a;
+			remoteRef = 923A8D942AFC65B60093699A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9233F3D1138DED9B005A6A23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9233F401138DEF6B005A6A23 /* ESAstronomy.cpp in Sources */,
+				9233F405138DEFBA005A6A23 /* ESAstronomyCache.cpp in Sources */,
+				92C3B1D5138F008500880094 /* ESWillmannBell.cpp in Sources */,
+				924EAFC915EC49BF0060BCA2 /* ESTimeLocAstroEnvironment.cpp in Sources */,
+				9297C0751714FC4200A04FBD /* ESSunAltitudeTable.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9233F3DD138DED9B005A6A23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					ES_IOS,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../esutil/src,
+					../../estime/src,
+					../../eslocation/src,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9233F3DE138DED9B005A6A23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					ES_IOS,
+				);
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../esutil/src,
+					../../estime/src,
+					../../eslocation/src,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9233F3E0138DED9B005A6A23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DSTROOT = /tmp/esastro.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = esastro_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9233F3E1138DED9B005A6A23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				DSTROOT = /tmp/esastro.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = esastro_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9233F3CF138DED9B005A6A23 /* Build configuration list for PBXProject "esastro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9233F3DD138DED9B005A6A23 /* Debug */,
+				9233F3DE138DED9B005A6A23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9233F3DF138DED9B005A6A23 /* Build configuration list for PBXNativeTarget "esastro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9233F3E0138DED9B005A6A23 /* Debug */,
+				9233F3E1138DED9B005A6A23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9233F3CC138DED9B005A6A23 /* Project object */;
+}
