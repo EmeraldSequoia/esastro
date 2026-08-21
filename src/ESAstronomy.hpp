@@ -248,6 +248,7 @@ class ESAstronomyManager {
     double                  planetEclipticLongitude(int planetNumber);
     double                  planetEclipticLatitude(int planetNumber);
     double                  planetGeocentricDistance(int planetNumber);
+    double                  planetTopocentricDistance(int planetNumber);
     double                  planetRadius(int n);
     double                  planetApparentDiameter(int n);
     double                  planetMass(int n);

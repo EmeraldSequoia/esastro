@@ -539,7 +539,8 @@ static void topocentricParallax(double ra,  // radians
                                 double observerLatitude,  // radians
                                 double observerAltitude,  // m
                                 double *Hprime,
-                                double *declPrime) {
+                                double *declPrime,
+                                double *distanceRatio = NULL) {  // topocentric distance over geocentric distance: ~1 on the horizon, 1 - sin(horizontal parallax) at the zenith
     static const double bOverA = 0.99664719;
     double u = atan(bOverA * tan(observerLatitude));
     double delta = observerAltitude/6378140;
@@ -555,6 +556,9 @@ static void topocentricParallax(double ra,  // radians
         *Hprime += (M_PI * 2);
     }
     *declPrime = asin(C/q);
+    if (distanceRatio) {
+        *distanceRatio = q;
+    }
 }
 
 static void moonRAAndDecl(ESTimeInterval dateInterval,
@@ -4071,6 +4075,57 @@ ESAstronomyManager::planetGeocentricDistance(int planetNumber) {  // in AU
     return distance;
 }
 
+// Topocentric distance from the observer to the planet, in AU (the geocentric distance corrected for the
+// observer's displacement from the Earth's center).  Only significant for the Moon, whose disc is up to 1.7%
+// larger overhead than its geocentric size; use it where an apparent size is being drawn or compared against
+// another apparent size (calculateEclipse classifies with topocentric sizes for the same reason).
+double
+ESAstronomyManager::planetTopocentricDistance(int planetNumber) {  // in AU
+    if (planetNumber < 0 || planetNumber > ECLastLegalPlanet || planetNumber == ECPlanetEarth) {
+        return nan("");
+    }
+    ESAssert(_astroCachePool);
+    ESAssert(_currentCache == _astroCachePool->currentCache);
+    ESAssert(!_currentCache || fabs(_currentCache->dateInterval - _calculationDateInterval) <= ASTRO_SLOP);
+    double planetRightAscension;
+    double planetDeclination;
+    double planetGeocentricDistance;
+    if (_currentCache &&
+        _currentCache->cacheSlotValidFlag[planetDeclSlotIndex+planetNumber] == _currentCache->currentFlag &&
+        _currentCache->cacheSlotValidFlag[planetRASlotIndex+planetNumber] == _currentCache->currentFlag &&
+        _currentCache->cacheSlotValidFlag[planetGeocentricDistanceSlotIndex+planetNumber] == _currentCache->currentFlag) {
+        planetDeclination = _currentCache->cacheSlots[planetDeclSlotIndex+planetNumber];
+        planetRightAscension = _currentCache->cacheSlots[planetRASlotIndex+planetNumber];
+        planetGeocentricDistance = _currentCache->cacheSlots[planetGeocentricDistanceSlotIndex+planetNumber];
+    } else {
+        double julianCenturiesSince2000Epoch = julianCenturiesSince2000EpochForDateInterval(_calculationDateInterval, NULL, _currentCache);
+        double planetEclipticLongitude;
+        double planetEclipticLatitude;
+        WB_planetApparentPosition(planetNumber, julianCenturiesSince2000Epoch/100, &planetEclipticLongitude, &planetEclipticLatitude, &planetGeocentricDistance, &planetRightAscension, &planetDeclination, _currentCache, ECWBFullPrecision);
+        if (_currentCache) {
+            _currentCache->cacheSlotValidFlag[planetEclipticLongitudeSlotIndex+planetNumber] = _currentCache->currentFlag;
+            _currentCache->cacheSlotValidFlag[planetEclipticLatitudeSlotIndex+planetNumber] = _currentCache->currentFlag;
+            _currentCache->cacheSlotValidFlag[planetDeclSlotIndex+planetNumber] = _currentCache->currentFlag;
+            _currentCache->cacheSlotValidFlag[planetRASlotIndex+planetNumber] = _currentCache->currentFlag;
+            _currentCache->cacheSlotValidFlag[planetGeocentricDistanceSlotIndex+planetNumber] = _currentCache->currentFlag;
+            _currentCache->cacheSlots[planetEclipticLongitudeSlotIndex+planetNumber] = planetEclipticLongitude;
+            _currentCache->cacheSlots[planetEclipticLatitudeSlotIndex+planetNumber] = planetEclipticLatitude;
+            _currentCache->cacheSlots[planetDeclSlotIndex+planetNumber] = planetDeclination;
+            _currentCache->cacheSlots[planetRASlotIndex+planetNumber] = planetRightAscension;
+            _currentCache->cacheSlots[planetGeocentricDistanceSlotIndex+planetNumber] = planetGeocentricDistance;
+        }
+    }
+    double gst = convertUTToGSTP03(_calculationDateInterval, _currentCache);
+    double lst = convertGSTtoLST(gst, _observerLongitude);
+    double planetHourAngle = lst - planetRightAscension;
+    double planetTopoHourAngle;
+    double planetTopoDeclination;
+    double distanceRatio;
+    topocentricParallax(planetRightAscension, planetDeclination, planetHourAngle, planetGeocentricDistance, _observerLatitude, 0/*observerAltitude*/,
+                        &planetTopoHourAngle, &planetTopoDeclination, &distanceRatio);
+    return planetGeocentricDistance * distanceRatio;
+}
+
 double
 ESAstronomyManager::planetMass(int n) {
     return planetMassInKG[n];                   // kilograms
@@ -4646,19 +4701,33 @@ calculateEclipse(ESTimeInterval _calculationDateInterval,
             double sunHourAngle = lst - sunRightAscension;
             double sunTopoHourAngle;
             double sunTopoDecl;
-            topocentricParallax(sunRightAscension, sunDeclination, sunHourAngle, sunGeocentricDistance, observerLatitude, 0/*observerAltitude*/, &sunTopoHourAngle, &sunTopoDecl);
+            double sunDistanceRatio;
+            topocentricParallax(sunRightAscension, sunDeclination, sunHourAngle, sunGeocentricDistance, observerLatitude, 0/*observerAltitude*/, &sunTopoHourAngle, &sunTopoDecl, &sunDistanceRatio);
             double sunTopoRA = lst - sunTopoHourAngle;
             
             double moonHourAngle = lst - moonRightAscension;
             double moonTopoHourAngle;
             double moonTopoDecl;
-            topocentricParallax(moonRightAscension, moonDeclination, moonHourAngle, moonGeocentricDistance, observerLatitude, 0/*observerAltitude*/, &moonTopoHourAngle, &moonTopoDecl);
+            double moonDistanceRatio;
+            topocentricParallax(moonRightAscension, moonDeclination, moonHourAngle, moonGeocentricDistance, observerLatitude, 0/*observerAltitude*/, &moonTopoHourAngle, &moonTopoDecl, &moonDistanceRatio);
             double moonTopoRA = lst - moonTopoHourAngle;
             
+            // Size the discs at the *topocentric* distances: the separation they are
+            // compared against is topocentric, so the radii must be too.  The Moon's
+            // disc is up to 1.7% larger overhead than seen from the Earth's center --
+            // precisely the margin that separates a total eclipse from an annular one,
+            // and geocentric radii misclassify hybrid eclipses as partial.
+            double sunTopoAngularSize;
+            double sunTopoParallax;
+            planetSizeAndParallax(ECPlanetSun, sunGeocentricDistance * sunDistanceRatio, &sunTopoAngularSize, &sunTopoParallax);
+            double moonTopoAngularSize;
+            double moonTopoParallax;
+            planetSizeAndParallax(ECPlanetMoon, moonGeocentricDistance * moonDistanceRatio, &moonTopoAngularSize, &moonTopoParallax);
+            
             physicalSeparation = angularSeparation(sunTopoRA, sunTopoDecl, moonTopoRA, moonTopoDecl);
-            separationAtPartialEclipse        =  sunAngularSize / 2 + moonAngularSize / 2;
-            separationAtTotalEclipse          = moonAngularSize / 2 - sunAngularSize / 2;  // might be negative (no total)
-            double separationAtAnnularEclipse =  sunAngularSize / 2 - moonAngularSize / 2;  // might be negative (no annular)
+            separationAtPartialEclipse        =  sunTopoAngularSize / 2 + moonTopoAngularSize / 2;
+            separationAtTotalEclipse          = moonTopoAngularSize / 2 - sunTopoAngularSize / 2;  // might be negative (no total)
+            double separationAtAnnularEclipse =  sunTopoAngularSize / 2 - moonTopoAngularSize / 2;  // might be negative (no annular)
             
             double altitude = planetAltAz(ECPlanetSun, _calculationDateInterval, observerLatitude, observerLongitude,
                                           true/*correctForParallax*/, true/*altNotAz*/, _currentCache);  // already incorporates topocentric parallax
