@@ -34,7 +34,7 @@
 #define kECT0k2 (36000.770053608 * M_PI/180)
 #define kECT0k3 (1/38710000.0 * M_PI/180)
 #define kECUTUnitsPerGSTUnit (1/1.00273790935)
-#define kECRefractionAtHorizonX (34.0 / 60 * (M_PI / 180))  // 34 arcminutes
+// kECRefractionAtHorizonX moved to ESAstronomy.hpp so view code can share it
 #define kECLunarCycleInSeconds (29.530589 * 3600 * 24)
 #define kECcosMoonEquatorEclipticAngle 0.999637670406006
 #define kECsinMoonEquatorEclipticAngle 0.026917056028711

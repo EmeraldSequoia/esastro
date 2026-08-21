@@ -35,6 +35,12 @@ class ESLocation;
 
 #include <string>
 
+// Refraction at the horizon (34 arcminutes): the convention altitudeAtRiseSet
+// (and hence calculateEclipse's not-up classification) is built on.  In the header
+// so that view code drawing an apparent-horizon line (e.g., EO's eclipse view)
+// shares the engine's convention rather than defining its own copy.
+#define kECRefractionAtHorizonX (34.0 / 60 * (M_PI / 180))  // 34 arcminutes
+
 // Internal type only
 typedef ESTimeInterval (*CalculationMethod)(ESTimeInterval   calculationDate,
                                             double           observerLatitude,
