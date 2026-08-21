@@ -4001,8 +4001,13 @@ ESAstronomyManager::planetDecl(int  planetNumber,
             double planetHourAngle = lst - planetRightAscension;
             double planetTopoRightAscension;
             double planetTopoDeclination;
+            double planetTopoHourAngle;
             topocentricParallax(planetRightAscension, planetDeclination, planetHourAngle, planetGeocentricDistance, _observerLatitude, 0/*observerAltitude*/,
-                                &planetTopoRightAscension, &planetTopoDeclination);
+                                &planetTopoHourAngle, &planetTopoDeclination);
+            planetTopoRightAscension = lst - planetTopoHourAngle;
+            if (planetTopoRightAscension < 0) {
+                planetTopoRightAscension += M_PI * 2;
+            }
             if (_currentCache) {
                 _currentCache->cacheSlotValidFlag[planetDeclTopoSlotIndex+planetNumber] = _currentCache->currentFlag;
                 _currentCache->cacheSlotValidFlag[planetRATopoSlotIndex+planetNumber] = _currentCache->currentFlag;
