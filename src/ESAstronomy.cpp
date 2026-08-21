@@ -13,6 +13,7 @@
 #include "ESAstronomy.hpp"
 #include "ESWatchTime.hpp"
 #include "ESTimeEnvironment.hpp"
+#include "ESLeapSecond.hpp"
 #include "ESLocation.hpp"
 #include "../Willmann-Bell/ESWillmannBell.hpp"
 #include "ESErrorReporter.hpp"
@@ -312,12 +313,60 @@ static double espenakDeltaT(double yearValue) {  // year value as in 2008.5 for 
 
 static bool useMeeusDeltaT = false;
 
+// From 1972-01-01 on, TT - UTC is exact by definition:  TT - TAI is fixed at
+// 32.184s, and TAI - UTC is an integer that changes only at the leap seconds
+// tabulated in ESLeapSecond.  That makes deltaT a lookup rather than a fitted
+// polynomial for the whole modern era.  The Espenak polynomial assumed the Earth
+// would keep decelerating; instead it sped up (no leap second since 2017), so by
+// 2026 its 2005-2050 branch reads ~5.9s high -- about 3 arcseconds of Moon
+// position -- and drifts ~0.5s/yr worse.  Mirror of chronometer-web's es-time.ts,
+// where the fix was made and verified first; this is the ESLeapSecond wiring
+// originally intended when that table was created.
+#define kECTTMinusTAI (32.184)  // TT - TAI, fixed by definition
+#define kECTAIMinusUTCAtLeapEraStart (10.0)  // TAI - UTC on 1972-01-01, before the first tabulated leap second
+#define kECLeapEraStart (ESFirstLeapSecondTransition - 182 * 24 * 3600.0)  // 1972-01-01 GMT, the first line of the IERS table: 182 days (Jan-Jun of leap year 1972) before the first transition; == -915235200
+
+// TT - UTC for an instant within the leap-second era (kECLeapEraStart through
+// ESLeapSecondTableValidUntil), exact to the millisecond.
+static double leapTTMinusUTC(ESTimeInterval ut) {
+    return kECTTMinusTAI + kECTAIMinusUTCAtLeapEraStart + ESLeapSecond::cumulativeLeapSecondsForUTC(ut);
+}
+
+// Espenak's deltaT at the table's validity horizon minus the exact value there --
+// the constant that makes the polynomial rejoin the table without a step.  The
+// parabola's curvature (tidal braking) is the trustworthy part of the physics on
+// century scales; its unpredictable decadal level is what this offset absorbs.
+static double leapRejoinOffset() {
+    static bool offsetValid = false;
+    static double offset;
+    if (!offsetValid) {
+        ESDateComponents cs;
+        ESCalendar_UTCDateComponentsFromTimeInterval(ESLeapSecondTableValidUntil, &cs);
+        int year = cs.era ? cs.year : 1 - cs.year;
+        cs.month = 1;
+        cs.day = 1;
+        cs.hour = 0;
+        cs.minute = 0;
+        cs.seconds = 0;
+        ESTimeInterval firstOfThatYear = ESCalendar_timeIntervalFromUTCDateComponents(&cs);
+        // The same year-plus-fraction convention convertUTtoET's caller feeds the polynomials.
+        double yearValue = year + (ESLeapSecondTableValidUntil - firstOfThatYear) / (365.25 * 24 * 3600);
+        offset = espenakDeltaT(yearValue) - leapTTMinusUTC(ESLeapSecondTableValidUntil);
+        offsetValid = true;
+    }
+    return offset;
+}
+
 static double convertUTtoET(double ut,
                             double yearValue) {
     if (useMeeusDeltaT) {
         return ut + ECMeeusDeltaT(yearValue);
-    } else {
+    } else if (ut < kECLeapEraStart) {  // pre-1972: no leap seconds; the polynomial is all there is
         return ut + espenakDeltaT(yearValue);
+    } else if (ut <= ESLeapSecondTableValidUntil) {  // 1972 through the table's horizon: exact
+        return ut + leapTTMinusUTC(ut);
+    } else {  // past the horizon: the polynomial again, shifted to be continuous at the handover
+        return ut + espenakDeltaT(yearValue) - leapRejoinOffset();
     }
 }
 
@@ -326,11 +375,12 @@ static double convertUTtoET(double ut,
 static void testConversion() {
     //for (int year = 900; year < 2110; year += 2) {
     for (int year = -500; year < 2110; year += 50) {
+        double ut = (year - 2001.0) * (365.25 * 24 * 3600);  // approximate instant, so convertUTtoET's branch on ut sees the right era
         useMeeusDeltaT = true;
-        double newValue = convertUTtoET(0, year);
+        double newValue = convertUTtoET(ut, year) - ut;
         printf("\n%04d %10.3f Meeus\n", year, newValue);
         useMeeusDeltaT = false;
-        newValue = convertUTtoET(0, year);
+        newValue = convertUTtoET(ut, year) - ut;
         printf("%04d %10.3f Espenak\n", year, newValue);
     }
 }
