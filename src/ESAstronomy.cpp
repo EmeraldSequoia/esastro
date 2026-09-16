@@ -111,6 +111,7 @@ timesAreOnSameDay(ESTimeInterval dt1,
     return cs1.era == cs2.era && cs1.year == cs2.year && cs1.month == cs2.month && cs1.day == cs2.day;
 }
 
+#ifndef NDEBUG  // Only used by runTests() and PRINT_DOUBLE, both of which are debug-only
 static void
 printDouble(double     value,
             const char *description) {
@@ -119,6 +120,7 @@ printDouble(double     value,
     }
     printf("%16.8f        %s\n", value, description);
 }
+#endif
 
 #undef ASTRO_DEBUG_PRINT
 #ifdef ASTRO_DEBUG_PRINT
@@ -140,6 +142,7 @@ printDateD(ESTimeInterval dt,
 }
 #endif
 
+#ifndef NDEBUG  // Only used by testPolarEdge() and PRINT_DATE_VIRT_LT, both of which are debug-only
 static void
 printDateDWithTimeZone(ESTimeInterval dt,
                        ESTimeZone     *estz,
@@ -156,6 +159,7 @@ printDateDWithTimeZone(ESTimeInterval dt,
            cs.era ? " CE" : "BCE", cs.year, cs.month, cs.day, cs.hour, cs.minute, second, microseconds,
            description);
 }
+#endif
 
 #ifdef ASTRO_DEBUG_PRINT
 #define PRINT_DOUBLE(D) printDouble(D, #D)

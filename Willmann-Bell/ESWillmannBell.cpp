@@ -286,7 +286,7 @@ static double lunarLongitudeForTDT(double        t,
 				   ECAstroCache  *currentCache) {
     assert(p >= ECWBLowPrecision && p <= ECWBFullPrecision);
     assertCacheValidForTDTCenturies(currentCache, t);
-    int slotIndex = WBLunarLongitudeLowSlotIndex + p;
+    int slotIndex = WBLunarLongitudeLowSlotIndex + (int)p;
     double V;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	V = currentCache->cacheSlots[slotIndex];
@@ -363,7 +363,7 @@ static double lunarLatitudeForTDT(double        t,
 				  ECAstroCache  *currentCache) {
     assert(p >= ECWBLowPrecision && p <= ECWBFullPrecision);
     assertCacheValidForTDTCenturies(currentCache, t);
-    int slotIndex = WBLunarLatitudeLowSlotIndex + p;
+    int slotIndex = WBLunarLatitudeLowSlotIndex + (int)p;
     double U;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	U = currentCache->cacheSlots[slotIndex];
@@ -438,7 +438,7 @@ static double lunarDistanceForTDT(double        t,
 				  ECAstroCache  *currentCache) {
     assert(p >= ECWBLowPrecision && p <= ECWBFullPrecision);
     assertCacheValidForTDTCenturies(currentCache, t);
-    int slotIndex = WBLunarDistanceLowSlotIndex + p;
+    int slotIndex = WBLunarDistanceLowSlotIndex + (int)p;
     double R;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	R = currentCache->cacheSlots[slotIndex];
@@ -587,10 +587,10 @@ void WB_MoonRAAndDecl(double 	    centuriesSinceEpochTDT,
 		      ECAstroCache  *currentCache,
 		      ECWBPrecision p) {
     assertCacheValidForTDTCenturies(currentCache, centuriesSinceEpochTDT);
-    int raSlotIndex = WBMoonRALowSlotIndex + p;
-    int declSlotIndex = WBMoonDeclLowSlotIndex + p;
-    int longSlotIndex = WBMoonEclipticLongitudeLowSlotIndex + p;
-    int latSlotIndex = WBMoonEclipticLatitudeLowSlotIndex + p;
+    int raSlotIndex = WBMoonRALowSlotIndex + (int)p;
+    int declSlotIndex = WBMoonDeclLowSlotIndex + (int)p;
+    int longSlotIndex = WBMoonEclipticLongitudeLowSlotIndex + (int)p;
+    int latSlotIndex = WBMoonEclipticLatitudeLowSlotIndex + (int)p;
     if (currentCache && currentCache->cacheSlotValidFlag[raSlotIndex] == currentCache->currentFlag) {
 	assert(currentCache->cacheSlotValidFlag[declSlotIndex] == currentCache->currentFlag);
 	assert(currentCache->cacheSlotValidFlag[longSlotIndex] == currentCache->currentFlag);
@@ -629,7 +629,7 @@ double WB_MoonEclipticLongitude(double        centuriesSinceEpochTDT,
 				ECAstroCache  *currentCache,
 				ECWBPrecision p) {
     assertCacheValidForTDTCenturies(currentCache, centuriesSinceEpochTDT);
-    int slotIndex = WBMoonEclipticLongitudeLowSlotIndex + p;
+    int slotIndex = WBMoonEclipticLongitudeLowSlotIndex + (int)p;
     double Vr;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	Vr = currentCache->cacheSlots[slotIndex];
@@ -648,7 +648,7 @@ double WB_MoonEclipticLatitude(double        centuriesSinceEpochTDT,
 			       ECAstroCache  *currentCache,
 			       ECWBPrecision p) {
     assertCacheValidForTDTCenturies(currentCache, centuriesSinceEpochTDT);
-    int slotIndex = WBMoonEclipticLatitudeLowSlotIndex + p;
+    int slotIndex = WBMoonEclipticLatitudeLowSlotIndex + (int)p;
     double Ur;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	Ur = currentCache->cacheSlots[slotIndex];
@@ -667,7 +667,7 @@ double WB_MoonDistance(double        centuriesSinceEpochTDT,
 		       ECAstroCache  *currentCache,
 		       ECWBPrecision p) {
     assertCacheValidForTDTCenturies(currentCache, centuriesSinceEpochTDT);
-    int slotIndex = WBMoonDistanceLowSlotIndex + p;
+    int slotIndex = WBMoonDistanceLowSlotIndex + (int)p;
     double R;
     if (currentCache && currentCache->cacheSlotValidFlag[slotIndex] == currentCache->currentFlag) {
 	R = currentCache->cacheSlots[slotIndex];
