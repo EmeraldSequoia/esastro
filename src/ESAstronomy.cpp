@@ -2970,7 +2970,7 @@ ESAstronomyManager::nextPlanettransit(int planetNumber) {
 
 ESTimeInterval
 ESAstronomyManager::prevPlanettransit(int planetNumber) {
-    return nextPrevPlanettransit(planetNumber, true/*nextNotPrev*/);
+    return nextPrevPlanettransit(planetNumber, false/*nextNotPrev*/);
 }
 
 ESTimeInterval
