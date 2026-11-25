@@ -283,6 +283,9 @@ class ESAstronomyManager {
     double                  planetHeliocentricLatitude(int planetNumber);
     double                  planetHeliocentricRadius(int planetNumber);
 
+// Saturn's ring tilts as seen from the Earth and the Sun, and the shadow offset (Meeus ch. 45); radians
+    void                    saturnRingGeometry(double *earthTilt, double *sunTilt, double *deltaU);
+
 // Azimuth and ecliptic longitude of where the ecliptic has its highest altitude at the present time
     double                  azimuthOfHighestEclipticAltitude();
     double                  longitudeOfHighestEclipticAltitude();
@@ -426,5 +429,11 @@ EOTSecondsForDateInterval(double dateInterval);
 extern void
 EC_printAngle(double     angle,
 	      const char *description);
+
+// The math behind ESAstronomyManager::saturnRingGeometry, exposed for testing; see ESAstronomy.cpp
+void saturnRingGeometryFromPositions(double T,
+                                     double lambda, double beta,
+                                     double l, double b,
+                                     double *earthTilt, double *sunTilt, double *deltaU);
 
 #endif // _ESASTRONOMY_HPP_

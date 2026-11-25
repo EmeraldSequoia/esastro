@@ -3065,6 +3065,51 @@ ESAstronomyManager::planetHeliocentricRadius(int planetNumber) {
     return radius;
 }
 
+// Saturn's ring geometry, after Meeus, Astronomical Algorithms (2nd ed.), chapter 45.
+// T is Julian centuries (TDT) since J2000.  lambda/beta are Saturn's geocentric ecliptic
+// longitude and latitude, l/b its heliocentric ones, all in radians and referred to the
+// ecliptic of date.  Returns, in radians:
+//   earthTilt (B):  Saturnicentric latitude of the Earth referred to the ring plane.  Positive
+//                   means we see the rings' north face.
+//   sunTilt (B'):   the same for the Sun; the lit face of the rings.
+//   deltaU:         Saturnicentric longitude of the Sun minus that of the Earth, measured in the
+//                   ring plane in the prograde direction, in (-pi, pi].  Meeus gives |deltaU|; the
+//                   sign says which side of the globe its shadow on the rings falls.
+void
+saturnRingGeometryFromPositions(double T,
+                                double lambda, double beta,
+                                double l, double b,
+                                double *earthTilt, double *sunTilt, double *deltaU) {
+    const double d2r = M_PI / 180;
+    double i = (28.075216 - 0.012998 * T + 0.000004 * T * T) * d2r;      // ring plane inclination to the ecliptic
+    double node = (169.508470 + 1.394681 * T + 0.000412 * T * T) * d2r;  // ascending node of the ring plane on the ecliptic
+    double sinI = sin(i);
+    double cosI = cos(i);
+    if (earthTilt) {
+        *earthTilt = asin(sinI * cos(beta) * sin(lambda - node) - cosI * sin(beta));
+    }
+    if (sunTilt) {
+        *sunTilt = asin(sinI * cos(b) * sin(l - node) - cosI * sin(b));
+    }
+    if (deltaU) {
+        double u1 = atan2(sinI * sin(b) + cosI * cos(b) * sin(l - node), cos(b) * cos(l - node));
+        double u2 = atan2(sinI * sin(beta) + cosI * cos(beta) * sin(lambda - node), cos(beta) * cos(lambda - node));
+        *deltaU = remainder(u1 - u2, 2 * M_PI);
+    }
+}
+
+void
+ESAstronomyManager::saturnRingGeometry(double *earthTilt, double *sunTilt, double *deltaU) {
+    ESAssert(_astroCachePool);
+    ESAssert(_currentCache == _astroCachePool->currentCache);
+    double julianCenturiesSince2000Epoch = julianCenturiesSince2000EpochForDateInterval(_calculationDateInterval, NULL, _currentCache);
+    saturnRingGeometryFromPositions(julianCenturiesSince2000Epoch,
+                                    planetEclipticLongitude(ECPlanetSaturn), planetEclipticLatitude(ECPlanetSaturn),
+                                    WB_planetHeliocentricLongitude(ECPlanetSaturn, julianCenturiesSince2000Epoch/100, _currentCache),
+                                    WB_planetHeliocentricLatitude(ECPlanetSaturn, julianCenturiesSince2000Epoch/100, _currentCache),
+                                    earthTilt, sunTilt, deltaU);
+}
+
 std::string
 ESAstronomyManager::moonPhaseString () {
     double age;
