@@ -283,7 +283,7 @@ class ESAstronomyManager {
     double                  planetHeliocentricLatitude(int planetNumber);
     double                  planetHeliocentricRadius(int planetNumber);
 
-// Saturn's ring tilts as seen from the Earth and the Sun, and the shadow offset (Meeus ch. 45); radians
+// Saturn's ring tilts as seen from the Earth and the Sun, and the shadow offset (Meeus ch. 45, with the IAU pole); radians
     void                    saturnRingGeometry(double *earthTilt, double *sunTilt, double *deltaU);
 
 // Azimuth and ecliptic longitude of where the ecliptic has its highest altitude at the present time

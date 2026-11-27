@@ -3065,7 +3065,142 @@ ESAstronomyManager::planetHeliocentricRadius(int planetNumber) {
     return radius;
 }
 
-// Saturn's ring geometry, after Meeus, Astronomical Algorithms (2nd ed.), chapter 45.
+// Long-term precession of the ecliptic and equator, from Vondrak, Capitaine & Wallace, "New precession
+// expressions, valid for long time intervals", A&A 534, A22 (2011), as coded in ERFA's eraLtpecl and
+// eraLtpequ.  Valid for +/- 200,000 years and close to IAU 2006 precession near J2000.  T is Julian
+// centuries since J2000; each returns a unit vector in the ICRS (J2000 mean equator and equinox).
+static void
+vondrakEclipticPole(double T, double vec[3]) {
+    static const double pqpol[2][4] = {
+        { 5851.607687, -0.1189000, -0.00028913,  0.000000101},
+        {-1600.886300,  1.1689818, -0.00000020, -0.000000437}
+    };
+    static const double pqper[][5] = {  // period (centuries), cos P, cos Q, sin P, sin Q (arcsec)
+        { 708.15, -5486.751211, -684.661560,   667.666730, -5523.863691},
+        {2309.00,   -17.127623, 2446.283880, -2354.886252,  -549.747450},
+        {1620.00,  -617.517403,  399.671049,  -428.152441,  -310.998056},
+        { 492.20,   413.442940, -356.652376,   376.202861,   421.535876},
+        {1183.00,    78.614193, -186.387003,   184.778874,   -36.776172},
+        { 622.00,  -180.732815, -316.800070,   335.321713,  -145.278396},
+        { 882.00,   -87.676083,  198.296701,  -185.138669,   -34.744450},
+        { 547.00,    46.140315,  101.135679,  -120.972830,    22.885731}
+    };
+    const double as2r = M_PI / (180 * 3600);
+    double p = 0, q = 0;
+    for (size_t k = 0; k < sizeof(pqper) / sizeof(pqper[0]); k++) {
+        double a = 2 * M_PI * T / pqper[k][0];
+        double s = sin(a), c = cos(a);
+        p += c * pqper[k][1] + s * pqper[k][3];
+        q += c * pqper[k][2] + s * pqper[k][4];
+    }
+    double w = 1;
+    for (int k = 0; k < 4; k++) {
+        p += pqpol[0][k] * w;
+        q += pqpol[1][k] * w;
+        w *= T;
+    }
+    p *= as2r;
+    q *= as2r;
+    w = 1 - p * p - q * q;
+    w = w < 0 ? 0 : sqrt(w);
+    const double eps0 = 84381.406 * as2r;  // obliquity at J2000
+    vec[0] = p;
+    vec[1] = -q * cos(eps0) - w * sin(eps0);
+    vec[2] = -q * sin(eps0) + w * cos(eps0);
+}
+
+static void
+vondrakEquatorPole(double T, double vec[3]) {
+    static const double xypol[2][4] = {
+        {  5453.282155,  0.4252841, -0.00037173, -0.000000152},
+        {-73750.930350, -0.7675452, -0.00018725,  0.000000231}
+    };
+    static const double xyper[][5] = {  // period (centuries), cos X, cos Y, sin X, sin Y (arcsec)
+        { 256.75,  -819.940624, 75004.344875, 81491.287984,  1558.515853},
+        { 708.15, -8444.676815,   624.033993,   787.163481,  7774.939698},
+        { 274.20,  2600.009459,  1251.136893,  1251.296102, -2219.534038},
+        { 241.45,  2755.175630, -1102.212834, -1257.950837, -2523.969396},
+        {2309.00,  -167.659835, -2660.664980, -2966.799730,   247.850422},
+        { 492.20,   871.855056,   699.291817,   639.744522,  -846.485643},
+        { 396.10,    44.769698,   153.167220,   131.600209, -1393.124055},
+        { 288.90,  -512.313065,  -950.865637,  -445.040117,   368.526116},
+        { 231.10,  -819.415595,   499.754645,   584.522874,   749.045012},
+        {1610.00,  -538.071099,  -145.188210,   -89.756563,   444.704518},
+        { 620.00,  -189.793622,   558.116553,   524.429630,   235.934465},
+        { 157.87,  -402.922932,   -23.923029,   -13.549067,   374.049623},
+        { 220.30,   179.516345,  -165.405086,  -210.157124,  -171.330180},
+        {1200.00,    -9.814756,     9.344131,   -44.919798,   -22.899655}
+    };
+    const double as2r = M_PI / (180 * 3600);
+    double x = 0, y = 0;
+    for (size_t k = 0; k < sizeof(xyper) / sizeof(xyper[0]); k++) {
+        double a = 2 * M_PI * T / xyper[k][0];
+        double s = sin(a), c = cos(a);
+        x += c * xyper[k][1] + s * xyper[k][3];
+        y += c * xyper[k][2] + s * xyper[k][4];
+    }
+    double w = 1;
+    for (int k = 0; k < 4; k++) {
+        x += xypol[0][k] * w;
+        y += xypol[1][k] * w;
+        w *= T;
+    }
+    x *= as2r;
+    y *= as2r;
+    vec[0] = x;
+    vec[1] = y;
+    w = 1 - x * x - y * y;
+    vec[2] = w < 0 ? 0 : sqrt(w);
+}
+
+static void
+cross(const double a[3], const double b[3], double out[3]) {
+    out[0] = a[1] * b[2] - a[2] * b[1];
+    out[1] = a[2] * b[0] - a[0] * b[2];
+    out[2] = a[0] * b[1] - a[1] * b[0];
+}
+
+static double
+dot(const double a[3], const double b[3]) {
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
+
+static void
+normalize(double v[3]) {
+    double n = sqrt(dot(v, v));
+    v[0] /= n;
+    v[1] /= n;
+    v[2] /= n;
+}
+
+// The ring plane (Saturn's equator) referred to the ecliptic and equinox of date: its inclination i and
+// the longitude of its ascending node.  Saturn's pole is the IAU WGCCRE 2015 one (Archinal et al.,
+// Celest. Mech. Dyn. Astr. 130:22, 2018), alpha0 = 40.589 - 0.036T, delta0 = 83.537 - 0.004T in the
+// ICRS, carried to the ecliptic of date with the long-term precession above.  This replaces Meeus's
+// polynomials for i and the node, which hold the pole fixed in space and drift from it by up to 0.3
+// degree in B at the ends of the app's range.
+static void
+saturnRingPlane(double T, double *inclination, double *node) {
+    const double d2r = M_PI / 180;
+    double ra = (40.589 - 0.036 * T) * d2r;
+    double dec = (83.537 - 0.004 * T) * d2r;
+    double pole[3] = { cos(dec) * cos(ra), cos(dec) * sin(ra), sin(dec) };
+    double eclPole[3], equPole[3];
+    vondrakEclipticPole(T, eclPole);
+    vondrakEquatorPole(T, equPole);
+    double equinox[3];                  // x axis of the ecliptic-of-date frame
+    cross(equPole, eclPole, equinox);
+    normalize(equinox);
+    double yAxis[3];
+    cross(eclPole, equinox, yAxis);
+    *inclination = acos(dot(pole, eclPole));
+    double ascending[3];                // the ring plane's ascending node on the ecliptic
+    cross(eclPole, pole, ascending);
+    *node = atan2(dot(ascending, yAxis), dot(ascending, equinox));
+}
+
+// Saturn's ring geometry, after Meeus, Astronomical Algorithms (2nd ed.), chapter 45, with the ring
+// plane from saturnRingPlane rather than Meeus's polynomials.
 // T is Julian centuries (TDT) since J2000.  lambda/beta are Saturn's geocentric ecliptic
 // longitude and latitude, l/b its heliocentric ones, all in radians and referred to the
 // ecliptic of date.  Returns, in radians:
@@ -3080,9 +3215,8 @@ saturnRingGeometryFromPositions(double T,
                                 double lambda, double beta,
                                 double l, double b,
                                 double *earthTilt, double *sunTilt, double *deltaU) {
-    const double d2r = M_PI / 180;
-    double i = (28.075216 - 0.012998 * T + 0.000004 * T * T) * d2r;      // ring plane inclination to the ecliptic
-    double node = (169.508470 + 1.394681 * T + 0.000412 * T * T) * d2r;  // ascending node of the ring plane on the ecliptic
+    double i, node;
+    saturnRingPlane(T, &i, &node);
     double sinI = sin(i);
     double cosI = cos(i);
     if (earthTilt) {
